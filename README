@@ -1,0 +1,52 @@
+Games-Ratings version 0.0.1
+
+This is the initial release of Games::Ratings, a module to calculate
+ratings for chess or other games. At the moment one can calculate two
+different kinds of chess ratings: FIDE ratings (aka "FIDE Elo") and
+German DWZ. For more informations see POD of Games::Ratings, 
+Games::Ratings::Chess::FIDE and Games::Ratings::Chess::DWZ.
+
+Warning!
+
+This is the first module I wrote. Certainly it can be improved in
+various ways. Use at your own risk.
+
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Makefile.PL
+	make
+	make test
+	make install
+
+
+TODO
+
+* *.pm:            check arguments for subroutines
+                   maybe 'use Params::Validate'
+* *.pm:            Error handling (croak() etc.)
+* *.pm:            complete documentation (error messages etc.)
+* *.pm:            more tests
+* FIDE.pm:         tournament performance
+* FIDE.pm:         rating for previously unrated player
+* DWZ.pm:          rating for previously unrated player
+* DWZ.pm:          what to do if opponent is without DWZ rating?
+
+
+DEPENDENCIES
+
+This module depends on:
+
+  'Test::More'        => 0
+  'Class::Std::Utils' => 0
+  'version'           => 0
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2008, Christian Bartolomaeus
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.

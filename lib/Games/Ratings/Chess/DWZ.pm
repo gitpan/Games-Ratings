@@ -11,7 +11,8 @@ use strict;
 use warnings;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use 5.6.1;               # 'our' was introduced in perl 5.6
+use version; our $VERSION = qv('0.0.2');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -93,13 +94,13 @@ sub get_performance {
     ## $R_h -- performance (independent from old rating)
     my $R_h;
 
-    ## calculate W (Punkte -- points)
+    ## $W -- points scored (Punkte)
     my $W = $self->get_points_scored();
 
-    ## Anzahl der wertbaren Partien
+    ## $n -- number of games played (Anzahl der Partien)
     my $n = $self->get_number_of_games_played();
 
-    ## average rating of opponents
+    ## $R_c -- average rating of opponents
     my $R_c = $self->get_average_rating_of_opponents();
 
     ## $P -- percentage score (Gewinnanteil) -- three digits needed
@@ -1545,7 +1546,7 @@ Games::Ratings::Chess::DWZ - calculate changes to German ratings (DWZ)
 
 =head1 VERSION
  
-This documentation refers to Games::Ratings::Chess::DWZ version 0.0.1
+This documentation refers to Games::Ratings::Chess::DWZ version 0.0.2
  
 
 =head1 SYNOPSIS

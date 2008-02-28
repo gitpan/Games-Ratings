@@ -3,7 +3,7 @@ use warnings;
 
 use Games::Ratings::Chess::FIDE;
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 
 my %expected;
 my %computed;
@@ -74,6 +74,14 @@ $expected{t12_both_games_new_rating} = '2237';
 $computed{t12_both_games_new_rating} 
           = sprintf("%.f", $player->get_rating 
                            + $player->get_rating_change);
+
+## test 13: check expected points
+$expected{t13_expected_points_all_games} = '1.37';
+$computed{t13_expected_points_all_games} = $player->get_points_expected();
+
+## test 14: check performance
+$expected{t14_performance} = '2168';
+$computed{t14_performance} = $player->get_performance();
 
 ## run actual tests for all test_items in %expected
 foreach my $test_item ( sort keys %expected ) {

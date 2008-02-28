@@ -8,7 +8,8 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use 5.6.1;               # 'our' was introduced in perl 5.6
+use version; our $VERSION = qv('0.0.2');
 
 use Class::Std::Utils;   # we are using inside-out objects
 
@@ -198,7 +199,7 @@ Games::Ratings - generic methods for rating calculation (e.g. chess ratings)
 
 =head1 VERSION
 
-This document describes Games::Ratings version 0.0.1
+This document describes Games::Ratings version 0.0.2
 
 
 =head1 SYNOPSIS
@@ -215,7 +216,7 @@ This document describes Games::Ratings version 0.0.1
                   );
  my $n                = $player->get_number_of_games_played();
  my $points_scored    = $player->get_points_scored();
- my $opponents_rating = $player->get_average_rating_of_oppontens();
+ my $opponents_rating = $player->get_average_rating_of_opponents();
  $player->remove_all_games;
 
   
@@ -355,7 +356,8 @@ Games::Ratings requires no configuration files or environment variables.
 
 =head1 DEPENDENCIES
 
-Requires the C<Class::Std::Utils> module and the C<version> module.
+Requires the C<Class::Std::Utils> module and the C<version> module. Needs Perl
+5.6.1 or higher.
 
 
 =head1 INCOMPATIBILITIES

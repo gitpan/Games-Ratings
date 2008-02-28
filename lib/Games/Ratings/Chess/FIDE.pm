@@ -9,7 +9,8 @@ use strict;
 use warnings;
 use Carp;
 
-use version; our $VERSION = qv('0.0.1');
+use 5.6.1;               # 'our' was introduced in perl 5.6
+use version; our $VERSION = qv('0.0.2');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -48,6 +49,63 @@ sub get_new_rating {
     return $R_n;
 }
 
+## calculate expected points
+sub get_points_expected {
+    my ($self) = @_;
+    
+    ## $W_e -- expected points
+    my $W_e;
+
+    ## $A_rating -- own rating
+    my $own_rating = $self->get_rating();
+
+    ## sum up expected points for all games
+    foreach my $game_ref ( $self->get_all_games() ) {
+        ## determine rating difference
+        my $rating_difference = _get_rating_difference(
+                                    $own_rating,
+                                    $game_ref->{opponent_rating},
+                                );
+        $W_e += _get_scoring_probability($rating_difference);
+    }
+
+    ## return expected points
+    return $W_e;
+}
+
+## calculate performance
+sub get_performance {
+    my ($self) = @_;
+
+    ## $R_h -- performance (independent from old rating)
+    my $R_h;
+
+    ## average rating of opponents
+    my $R_c = $self->get_average_rating_of_opponents();
+
+    ## $P -- percentage score (two digits needed)
+    my $P = sprintf( "%.2f", $self->get_percentage_score() );
+
+    ## if player scored 100 % or 0 % it's not possible to calc. performance
+    if ($P == 1) {
+        $R_h = $R_c + 667;
+        return $R_h;
+    }
+    if ($P == 0) {
+        $R_h = $R_c - 667;
+        return $R_h;
+    }
+
+    ## lookup $D rating difference according to $P from probability table 
+    my $D = _get_rating_difference_matching_percentage_score($P);
+
+    ## calculate performance
+    $R_h = $R_c + $D;
+
+    ## return performance
+    return $R_h;
+}
+
 ########################
 ## internal functions ##
 ########################
@@ -55,6 +113,10 @@ sub get_new_rating {
 ## scoring probabilities depending from rating difference (FIDE B0210.1b)
 our %scoring_probability_lookup_table;
 _set_scoring_probability_lookup_table();
+
+## lookup table needed to determine performance (FIDE B0210.1a)
+our %reverse_scoring_probability_lookup_table;
+_set_reverse_scoring_probability_lookup_table();
 
 ## calculate rating change for single game
 sub _calc_rating_change_for_single_game {
@@ -132,6 +194,23 @@ sub _get_rating_difference {
 
     ## return rating difference used for rating calculations
     return $rating_difference;
+}
+
+## calculate rating differences matching percentage score
+sub _get_rating_difference_matching_percentage_score {
+    my ($P) = @_;
+
+    ## lookup $D (rating difference) from lookup table
+    my $D;
+    if ($P lt 0.5) {
+        $D = -($reverse_scoring_probability_lookup_table{1-$P});
+    }
+    else {
+        $D = $reverse_scoring_probability_lookup_table{$P};
+    }
+
+    ## return $D
+    return $D;
 }
 
 ## use hash as lookup table for scoring probability (cmp. FIDE B0210.1b)
@@ -258,6 +337,62 @@ sub _set_scoring_probability_lookup_table {
     }
 }
 
+## use hash as lookup table (rating differences given a percentage score)
+## (cmp. FIDE B0210.1a)
+sub _set_reverse_scoring_probability_lookup_table {
+    $reverse_scoring_probability_lookup_table{'0.50'} = '0';
+    $reverse_scoring_probability_lookup_table{'0.51'} = '7';
+    $reverse_scoring_probability_lookup_table{'0.52'} = '14';
+    $reverse_scoring_probability_lookup_table{'0.53'} = '21';
+    $reverse_scoring_probability_lookup_table{'0.54'} = '29';
+    $reverse_scoring_probability_lookup_table{'0.55'} = '36';
+    $reverse_scoring_probability_lookup_table{'0.56'} = '43';
+    $reverse_scoring_probability_lookup_table{'0.57'} = '50';
+    $reverse_scoring_probability_lookup_table{'0.58'} = '57';
+    $reverse_scoring_probability_lookup_table{'0.59'} = '65';
+    $reverse_scoring_probability_lookup_table{'0.60'} = '72';
+    $reverse_scoring_probability_lookup_table{'0.61'} = '80';
+    $reverse_scoring_probability_lookup_table{'0.62'} = '87';
+    $reverse_scoring_probability_lookup_table{'0.63'} = '95';
+    $reverse_scoring_probability_lookup_table{'0.64'} = '102';
+    $reverse_scoring_probability_lookup_table{'0.65'} = '110';
+    $reverse_scoring_probability_lookup_table{'0.66'} = '117';
+    $reverse_scoring_probability_lookup_table{'0.67'} = '125';
+    $reverse_scoring_probability_lookup_table{'0.68'} = '133';
+    $reverse_scoring_probability_lookup_table{'0.69'} = '141';
+    $reverse_scoring_probability_lookup_table{'0.70'} = '149';
+    $reverse_scoring_probability_lookup_table{'0.71'} = '158';
+    $reverse_scoring_probability_lookup_table{'0.72'} = '166';
+    $reverse_scoring_probability_lookup_table{'0.73'} = '175';
+    $reverse_scoring_probability_lookup_table{'0.74'} = '184';
+    $reverse_scoring_probability_lookup_table{'0.75'} = '193';
+    $reverse_scoring_probability_lookup_table{'0.76'} = '202';
+    $reverse_scoring_probability_lookup_table{'0.77'} = '211';
+    $reverse_scoring_probability_lookup_table{'0.78'} = '220';
+    $reverse_scoring_probability_lookup_table{'0.79'} = '230';
+    $reverse_scoring_probability_lookup_table{'0.80'} = '240';
+    $reverse_scoring_probability_lookup_table{'0.81'} = '251';
+    $reverse_scoring_probability_lookup_table{'0.82'} = '262';
+    $reverse_scoring_probability_lookup_table{'0.83'} = '273';
+    $reverse_scoring_probability_lookup_table{'0.84'} = '284';
+    $reverse_scoring_probability_lookup_table{'0.85'} = '296';
+    $reverse_scoring_probability_lookup_table{'0.86'} = '309';
+    $reverse_scoring_probability_lookup_table{'0.87'} = '322';
+    $reverse_scoring_probability_lookup_table{'0.88'} = '336';
+    $reverse_scoring_probability_lookup_table{'0.89'} = '351';
+    $reverse_scoring_probability_lookup_table{'0.90'} = '366';
+    $reverse_scoring_probability_lookup_table{'0.91'} = '383';
+    $reverse_scoring_probability_lookup_table{'0.92'} = '401';
+    $reverse_scoring_probability_lookup_table{'0.93'} = '422';
+    $reverse_scoring_probability_lookup_table{'0.94'} = '444';
+    $reverse_scoring_probability_lookup_table{'0.95'} = '470';
+    $reverse_scoring_probability_lookup_table{'0.96'} = '501';
+    $reverse_scoring_probability_lookup_table{'0.97'} = '538';
+    $reverse_scoring_probability_lookup_table{'0.98'} = '589';
+    $reverse_scoring_probability_lookup_table{'0.99'} = '677';
+}
+
+
 1; # Magic true value required at end of module
 __END__
 
@@ -269,7 +404,7 @@ Games::Ratings::Chess::FIDE - calculate changes to FIDE ratings (Elos)
 
 =head1 VERSION
  
-This document describes Games::Ratings::Chess::FIDE version 0.0.1
+This document describes Games::Ratings::Chess::FIDE version 0.0.2
  
 
 =head1 SYNOPSIS
@@ -327,6 +462,20 @@ changes.
 
 Calculate new rating after the given games.
 
+=head2 get_points_expected
+
+  my $points_expected = $player->get_points_expected();
+
+Calculate expected points according to rating differences between own rating
+and opponents ratings.
+
+=head2 get_performance
+
+  my $performance = $player->get_performance();
+
+Calculate performance according to average rating of opponents and percentage
+score.
+
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -381,8 +530,7 @@ None reported.
 
 No bugs have been reported.
 
-At the moment it's not possible to calculate a tournament performance. Also
-it's not possible to compute a FIDE rating for a previously unrated player.
+At the moment, it's not possible to compute a FIDE rating for a previously unrated player.
 
 Note, that a missing development coefficient (set via
 $player->set_coefficient()) may lead to incorrect results. The program tries

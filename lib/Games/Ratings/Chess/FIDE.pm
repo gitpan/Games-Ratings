@@ -10,7 +10,7 @@ use warnings;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -19,13 +19,17 @@ use base qw ( Games::Ratings );
 sub get_rating_change {
     my ($self) = @_;
 
+    ## get own rating and own coefficient
+    my $own_rating      = $self->get_rating();
+    my $own_coefficient = $self->get_coefficient();
+
     my $rating_change_total;
     ## calculate rating change for each game separately
     foreach my $game_ref ( $self->get_all_games() ) {
         ## add rating change for single game to total rating change
         $rating_change_total += _calc_rating_change_for_single_game(
-                                    $self->get_rating(),
-                                    $self->get_coefficient(),
+                                    $own_rating,
+                                    $own_coefficient,
                                     $game_ref->{opponent_rating},
                                     $game_ref->{result},
                                 );
@@ -56,17 +60,15 @@ sub get_points_expected {
     ## $W_e -- expected points
     my $W_e;
 
-    ## $A_rating -- own rating
+    ## $own_rating -- own rating
     my $own_rating = $self->get_rating();
 
     ## sum up expected points for all games
     foreach my $game_ref ( $self->get_all_games() ) {
-        ## determine rating difference
-        my $rating_difference = _get_rating_difference(
-                                    $own_rating,
-                                    $game_ref->{opponent_rating},
-                                );
-        $W_e += _get_scoring_probability($rating_difference);
+        $W_e += _get_scoring_probability_for_single_game(
+                    $own_rating,
+                    $game_ref->{opponent_rating},
+                );
     }
 
     ## return expected points
@@ -130,11 +132,8 @@ sub _calc_rating_change_for_single_game {
         $A_coefficient = _guess_coefficient($A_rating);
     }
 
-    ## determine rating difference
-    my $rating_difference = _get_rating_difference($A_rating,$B_rating);
-  
     ## get scoring probability for player A
-    my $A_exp = _get_scoring_probability($rating_difference);
+    my $A_exp = _get_scoring_probability_for_single_game($A_rating,$B_rating);
 
     ## compute rating changes for player A
     my $A_rating_change = $A_coefficient * ($numerical_result-$A_exp);
@@ -161,8 +160,10 @@ sub _guess_coefficient {
 }
 
 ## calculate scoring probability for a single game
-sub _get_scoring_probability {
-    my ($rating_difference) = @_;
+sub _get_scoring_probability_for_single_game {
+    my ($A_rating,$B_rating) = @_;
+
+    my $rating_difference = _get_rating_difference($A_rating,$B_rating);
 
     ## get scoring probability of player A from lookup table 
     my $A_exp;
@@ -451,7 +452,7 @@ Please check the documentation of Games::Ratings for those methods.
 
 =head2 get_rating_change
 
-  my $rating_change = sprintf("%+.2f", $player->get_rating_change);
+  my $rating_change = sprintf("%+.2f", $player->get_rating_change() );
 
 Calculate rating changes for all stored games and return sum of those
 changes.

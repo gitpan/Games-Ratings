@@ -10,3 +10,9 @@ Revision history for Games-Ratings
          (calculate expected points for given games)
        added method $player->get_performance() to FIDE.pm
          (calculate performance for given games)
+
+0.0.3  Fri Feb 29 17:39:00 2008
+       added 'use 5.006;' to Makefile.PL
+         (I still got failed tests from cpan-testers for Perl 5.5)
+       added Games::Ratings::Go::EGF (version 0.0.1)
+         (calculation of go ratings)

@@ -5,10 +5,12 @@ README
 lib/Games/Ratings.pm
 lib/Games/Ratings/Chess/DWZ.pm
 lib/Games/Ratings/Chess/FIDE.pm
+lib/Games/Ratings/Go/EGF.pm
 t/00.load.t
 t/01.Elo.t
 t/02.DWZ.t
 t/03.distribution.t
+t/04.EGF.t
 t/pod-coverage.t
 t/pod.t
 META.yml                                 Module meta-data (added by MakeMaker)

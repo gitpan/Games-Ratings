@@ -9,7 +9,7 @@ use strict;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 use Class::Std::Utils;   # we are using inside-out objects
 
@@ -199,7 +199,7 @@ Games::Ratings - generic methods for rating calculation (e.g. chess ratings)
 
 =head1 VERSION
 
-This document describes Games::Ratings version 0.0.2
+This document describes Games::Ratings version 0.0.3
 
 
 =head1 SYNOPSIS

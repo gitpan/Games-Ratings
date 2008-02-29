@@ -3,7 +3,7 @@ package Games::Ratings::Chess::DWZ;
 ## TODO: check arguments for subroutines (use Data::Checkers)?
 ## TODO: Error handling
 ##       * croak()
-##       * perldoc anpassen
+##       * adjust perldoc
 ## TODO: what to do with opponents without a DWZ rating?
 ## TODO: what to do if player doesn't have a DWZ rating yet?
 
@@ -12,7 +12,7 @@ use warnings;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -1546,7 +1546,7 @@ Games::Ratings::Chess::DWZ - calculate changes to German ratings (DWZ)
 
 =head1 VERSION
  
-This documentation refers to Games::Ratings::Chess::DWZ version 0.0.2
+This documentation refers to Games::Ratings::Chess::DWZ version 0.0.3
  
 
 =head1 SYNOPSIS
@@ -1588,7 +1588,7 @@ Games::Ratings.
 
 =head2 get_rating_change
 
-  my $rating_change = sprintf("%+.2f", $player->get_rating_change);
+  my $rating_change = sprintf( "%+.2f", $player->get_rating_change() );
 
 Calculate rating changes for all stored games and return sum of those
 changes.

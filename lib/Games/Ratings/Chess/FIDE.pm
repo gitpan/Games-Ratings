@@ -10,7 +10,7 @@ use warnings;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -405,7 +405,7 @@ Games::Ratings::Chess::FIDE - calculate changes to FIDE ratings (Elos)
 
 =head1 VERSION
  
-This document describes Games::Ratings::Chess::FIDE version 0.0.2
+This document describes Games::Ratings::Chess::FIDE version 0.0.4
  
 
 =head1 SYNOPSIS
@@ -430,7 +430,7 @@ This document describes Games::Ratings::Chess::FIDE version 0.0.2
 This module provides methods to calculate FIDE rating (Elo) changes for one
 player, having played one or more rated games. Gains and losses are calculated
 according to the FIDE rating rules (cmp. FIDE Rating Regulations, FIDE
-Handbook B.02.10: http://www.fide.com/official/handbook.asp?level=B0210).
+Handbook B.02.10: http://www.fide.com/info/handbook?id=75&view=article).
 
 FIDE uses a table with scoring probabilities in dependence from rating
 differences between the players.
@@ -558,8 +558,8 @@ This module was inspired by Terrence Brannon's module Chess::Elo
 
 http://en.wikipedia.org/wiki/Elo_rating for informations about the Elo system.
 
-http://www.fide.com/official/handbook.asp?level=B02 for informations about the
-FIDE rating system (esp. point 10.0).
+http://www.fide.com/info/handbook?id=11&view=category for informations about
+the FIDE rating system (esp. point 10.0).
 
 
 =head1 LICENCE AND COPYRIGHT

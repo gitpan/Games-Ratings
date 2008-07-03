@@ -1,4 +1,4 @@
-Games-Ratings version 0.0.3
+Games-Ratings version 0.0.4
 
 This is Games::Ratings, a module to calculate ratings for chess or
 other games. At the moment one can calculate two different kinds of

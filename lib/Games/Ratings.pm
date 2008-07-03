@@ -9,7 +9,7 @@ use strict;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 use Class::Std::Utils;   # we are using inside-out objects
 
@@ -125,7 +125,7 @@ sub get_number_of_games_played {
     my ($self) = @_;
 
     ## number of played games equals length of array of played games
-    return $self->get_all_games();
+    return scalar $self->get_all_games();
 }
 
 ## calculate and return scored points
@@ -199,7 +199,7 @@ Games::Ratings - generic methods for rating calculation (e.g. chess ratings)
 
 =head1 VERSION
 
-This document describes Games::Ratings version 0.0.3
+This document describes Games::Ratings version 0.0.4
 
 
 =head1 SYNOPSIS

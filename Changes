@@ -16,3 +16,9 @@ Revision history for Games-Ratings
          (I still got failed tests from cpan-testers for Perl 5.5)
        added Games::Ratings::Go::EGF (version 0.0.1)
          (calculation of go ratings)
+
+0.0.4  Thu Jul 3  15:00:00 2008
+       updated links to FIDE Handbook (FIDE changed their URLs)
+       fixed small bug in Ratings.pm
+         (subroutine get_number_of_games_played had no explicit return scalar)
+	 (it has now ;-)

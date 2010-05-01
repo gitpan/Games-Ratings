@@ -21,4 +21,13 @@ Revision history for Games-Ratings
        updated links to FIDE Handbook (FIDE changed their URLs)
        fixed small bug in Ratings.pm
          (subroutine get_number_of_games_played had no explicit return scalar)
-	 (it has now ;-)
+	     (it has now ;-)
+
+0.0.5  Sun Apr 18  15:00:00 2010
+       added tests (DWZ and Elo rating calculations from real tournaments)
+       fixed bug in DWZ.pm
+         (at some points it was necessary to use sprintf() in order to have
+         three digits after decimal point)
+       fixed bug in DWZ.pm
+         (at one point it was necessary to use sprintf() in order to have
+         two digits after decimal point)

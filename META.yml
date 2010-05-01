@@ -1,13 +1,16 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Games-Ratings
-version:      0.0.4
-version_from: lib/Games/Ratings.pm
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                Games-Ratings
+version:             0.0.5
+abstract:            generic methods for rating calculation (e.g. chess ratings)
+license:             ~
+author:              
+    - Christian Bartolomaeus <bartolin@gmx.de>
+generated_by:        ExtUtils::MakeMaker version 6.42
+distribution_type:   module
+requires:     
     Class::Std::Utils:             0
     Test::More:                    0
     version:                       0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30_01
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

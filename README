@@ -1,4 +1,4 @@
-Games-Ratings version 0.0.4
+Games-Ratings version 0.0.5
 
 This is Games::Ratings, a module to calculate ratings for chess or
 other games. At the moment one can calculate two different kinds of
@@ -32,11 +32,11 @@ TODO
                    maybe 'use Params::Validate'
 * *.pm:            Error handling (croak() etc.)
 * *.pm:            complete documentation (error messages etc.)
-* *.pm:            write more tests
 * FIDE.pm:         rating for previously unrated player
 * DWZ.pm:          rating for previously unrated player
 * DWZ.pm:          what to do if opponent is without DWZ rating?
 * EGF.pm:          rating for previously unrated player
+* EGF.pm:          write more tests
 
 
 DEPENDENCIES
@@ -52,7 +52,7 @@ Also, this module depends on:
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2008, Christian Bartolomaeus
+Copyright (C) 2010, Christian Bartolomaeus
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

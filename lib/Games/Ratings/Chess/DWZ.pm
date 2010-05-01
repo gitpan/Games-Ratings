@@ -12,7 +12,7 @@ use warnings;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.5');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -24,6 +24,9 @@ _set_scoring_probability_lookup_table();
 ## lookup table needed to determine performance (Turnierleistung)
 our %reverse_scoring_probability_lookup_table ;
 _set_reverse_scoring_probability_lookup_table();
+
+## values of iteration runs -- used to abort infinite loops
+my %iteration_values_seen;
 
 ## calculate rating change
 sub get_rating_change {
@@ -74,7 +77,7 @@ sub get_points_expected {
 
     ## $A_rating -- own rating
     my $own_rating = $self->get_rating();
-
+    
     ## sum up expected points for all games
     foreach my $game_ref ( $self->get_all_games() ) {
         $W_e += _get_scoring_probability(
@@ -84,7 +87,7 @@ sub get_points_expected {
     }
 
     ## return expected points
-    return $W_e;
+    return sprintf("%.3f", $W_e);
 }
 
 ## calculate performance (Turnierleistung)
@@ -136,8 +139,25 @@ sub get_performance {
         ##        points (if player's rating would have been = performance)
         my $PD = sprintf("%.3f", ($W - $W_e) / $n + 0.5);
 
-        ## did we reach the end of the iterative process 
-        if ($PD == 0.5) {
+        ## $iteration_id -- measures distance between $W and $W_e
+        ##                  stop iteration if encountered second time
+        my $iteration_id;
+        if ( $W > $W_e ) {
+            $iteration_id = sprintf("%.3f", $W - $W_e);
+        }
+        else {
+            $iteration_id = sprintf("%.3f", $W_e - $W);
+        }
+
+        ## do we have to end iteration?
+        my $stop_iteration = 0;
+        ## was there already a run with same values
+        if ( $iteration_values_seen{$iteration_id}++ ) {
+            $stop_iteration = 1; 
+        }
+
+        ## end of iterative process
+        if ( ( $PD == 0.5 ) or ( $stop_iteration ) ) {
             ## assign performance == temporarily changed rating
             $R_h = $self->get_rating();
             ## restore original rating
@@ -166,7 +186,7 @@ sub _get_rating_difference_matching_percentage_score {
     ## lookup $D (rating difference, Wertungsdifferenz) from lookup table
     my $D;
     if ($P lt 0.5) {
-        $D = -($reverse_scoring_probability_lookup_table{1-$P});
+        $D = -($reverse_scoring_probability_lookup_table{sprintf("%.3f",1-$P)});
     }
     else {
         $D = $reverse_scoring_probability_lookup_table{$P};
@@ -1707,7 +1727,7 @@ about the DWZ rating system.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
+Copyright (c) 2010, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

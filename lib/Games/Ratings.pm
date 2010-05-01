@@ -9,7 +9,7 @@ use strict;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.4');
+use version; our $VERSION = qv('0.0.5');
 
 use Class::Std::Utils;   # we are using inside-out objects
 
@@ -199,7 +199,7 @@ Games::Ratings - generic methods for rating calculation (e.g. chess ratings)
 
 =head1 VERSION
 
-This document describes Games::Ratings version 0.0.4
+This document describes Games::Ratings version 0.0.5
 
 
 =head1 SYNOPSIS
@@ -392,7 +392,7 @@ http://en.wikipedia.org/wiki/Elo_rating for informations about the Elo system.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
+Copyright (c) 2010, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.

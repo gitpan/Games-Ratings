@@ -11,7 +11,7 @@ use warnings;
 use Carp;
 
 use 5.6.1;               # 'our' was introduced in perl 5.6
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.5');
 
 ## look in Games::Ratings for methods not provide by this package
 use base qw ( Games::Ratings );
@@ -419,7 +419,7 @@ EGF rating system.
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2008, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
+Copyright (c) 2010, Christian Bartolomaeus C<< <bartolin@gmx.de> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
